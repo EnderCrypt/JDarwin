@@ -1,7 +1,7 @@
 package com.endercrypt.jdarwin;
 
+import com.endercrypt.jdarwin.bot.Bot;
 import com.endercrypt.jdarwin.bot.GenomeProcessor;
-import com.endercrypt.jdarwin.bot.Memory;
 import com.endercrypt.jdarwin.bot.Stack;
 
 public abstract class Operator
@@ -17,7 +17,7 @@ public abstract class Operator
 		}
 	}
 
-	public abstract void execute(Stack<Integer> numberStack, Stack<Boolean> booleanStack, Memory memory, GenomeProcessor genomeProcessor);
+	public abstract void execute(Stack<Integer> numberStack, Stack<Boolean> booleanStack, GenomeProcessor genomeProcessor, Bot bot);
 
 	@Override
 	public String toString()

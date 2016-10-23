@@ -11,10 +11,10 @@ public class Genome
 		this.operators = operators;
 	}
 
-	protected void execute(Memory memory)
+	protected void execute(Bot bot)
 	{
 		GenomeProcessor genomeProcessor = new GenomeProcessor(operators);
-		genomeProcessor.process(memory);
+		genomeProcessor.process(bot);
 	}
 
 	@Override

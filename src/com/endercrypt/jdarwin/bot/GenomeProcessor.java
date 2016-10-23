@@ -46,7 +46,7 @@ public class GenomeProcessor
 		};
 	}
 
-	public void process(Memory memory)
+	public void process(Bot bot)
 	{
 		Stack<Integer> numberStack = new Stack<Integer>(0);
 		Stack<Boolean> booleanStack = new Stack<Boolean>(true);
@@ -54,7 +54,7 @@ public class GenomeProcessor
 		while (iterator.hasNext())
 		{
 			Operator operator = iterator.next();
-			operator.execute(numberStack, booleanStack, memory, this);
+			operator.execute(numberStack, booleanStack, this, bot);
 		}
 	}
 
