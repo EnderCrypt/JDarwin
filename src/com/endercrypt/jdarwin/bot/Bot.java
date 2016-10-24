@@ -4,7 +4,6 @@ public class Bot
 {
 	private Genome genome;
 	private Memory memory;
-
 	private BotInfo botInfo;
 
 	public Bot(Genome genome)
@@ -16,8 +15,9 @@ public class Bot
 
 	public void update()
 	{
+		botInfo.preUpdate(this);
 		genome.execute(this);
-		System.out.println(memory);
+		botInfo.postUpdate(this);
 	}
 
 	public Genome getGenome()
