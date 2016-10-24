@@ -1,5 +1,7 @@
 package com.endercrypt.jdarwin.bot;
 
+import com.endercrypt.jdarwin.simulation.Simulation;
+
 public class Bot
 {
 	private Genome genome;
@@ -13,7 +15,7 @@ public class Bot
 		botInfo = new BotInfo();
 	}
 
-	public void update()
+	public void update(Simulation simulation)
 	{
 		botInfo.preUpdate(this);
 		genome.execute(this);

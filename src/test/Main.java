@@ -1,14 +1,26 @@
 package test;
 
-import com.endercrypt.jdarwin.bot.Bot;
-import com.endercrypt.jdarwin.compiler.JDarwin;
+import java.util.Timer;
+import java.util.TimerTask;
+
+import com.endercrypt.gui.Game;
 
 public class Main
 {
+	private static Timer timer = new Timer();
+	private static Game game;
+
 	public static void main(String[] args)
 	{
-		Bot bot = new Bot(JDarwin.compile("cond start 5 2 add 16 store stop end"));
-		bot.update();
-		System.out.println(bot.getMemory());
+		game = new Game();
+
+		timer.schedule(new TimerTask()
+		{
+			@Override
+			public void run()
+			{
+				game.update();
+			}
+		}, 20, 20);
 	}
 }

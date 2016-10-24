@@ -32,18 +32,22 @@ public class BotInfo
 	private static final int SysXpos = JDarwin.sysvars.get("xpos");
 	private static final int SysYpos = JDarwin.sysvars.get("ypos");
 
+	private static final double MOVEMENT_SPEED_MULTIPLIER = 0.05;
+	private static final double FRICTION = 0.95;
 	private static final double MAX_ENERGY = 32_000;
 
-	private int age = 0;
-	private double energy = 3000;
-	private double energyIncrease = 0;
-	private double body = 100;
-	private double bodyIncrease = 0;
-	private int timer = 0;
-	private int kills = 0;
-	private double rotation = Math.random() * (Math.PI * 2);
-	private Position position = new Position();
-	private Motion motion = new Motion();
+	private static final double QUARTER_ROTATION = Math.PI / 2;
+
+	public int age = 0;
+	public double energy = 3000;
+	public double energyIncrease = 0;
+	public double body = 100;
+	public double bodyIncrease = 0;
+	public int timer = 0;
+	public int kills = 0;
+	public double rotation = Math.random() * (Math.PI * 2);
+	public Position position = new Position();
+	public Motion motion = new Motion();
 
 	public BotInfo()
 	{
@@ -70,10 +74,12 @@ public class BotInfo
 		memory.set(SysDn, 0);
 		memory.set(SysSx, 0);
 		memory.set(SysDx, 0);
-		memory.set(SysVelup, (int) -motion.y);
-		memory.set(SysVeldn, (int) motion.y);
-		memory.set(SysVeldx, (int) -motion.x);
-		memory.set(SysVelsx, (int) motion.x);
+		double upVel = motion.getLengthByDirection(rotation);
+		double leftVel = motion.getLengthByDirection(rotation - (Math.PI / 2));
+		memory.set(SysVelup, (int) upVel);
+		memory.set(SysVeldn, (int) -upVel);
+		memory.set(SysVeldx, (int) leftVel);
+		memory.set(SysVelsx, (int) -leftVel);
 		memory.set(SysAimdx, 0);
 		memory.set(SysAimsx, 0);
 		memory.set(SysBodgain, (int) bodyIncrease);
@@ -101,9 +107,12 @@ public class BotInfo
 		timer++;
 		position.add(motion);
 
-		rotation -= (memory.get(SysAimsx) - memory.get(SysAimdx));
-		motion.addMotion(90, (memory.get(SysUp) - memory.get(SysDn)));
-		motion.addMotion(180, (memory.get(SysSx) - memory.get(SysDx)));
+		rotation -= (memory.get(SysAimsx) - memory.get(SysAimdx)) / 200.0;
+
+		motion.addMotion(rotation, (memory.get(SysUp) - memory.get(SysDn)) * MOVEMENT_SPEED_MULTIPLIER);
+		motion.addMotion(rotation - QUARTER_ROTATION, (memory.get(SysSx) - memory.get(SysDx)) * MOVEMENT_SPEED_MULTIPLIER);
+		motion.multiplyLength(FRICTION);
+		motion.truncateLength(40 * MOVEMENT_SPEED_MULTIPLIER);
 
 		if (energy > MAX_ENERGY)
 		{
@@ -112,9 +121,15 @@ public class BotInfo
 			energy = MAX_ENERGY;
 		}
 		double bodyChange = (memory.get(SysStrbody) - memory.get(SysFdbody));
-		bodyChange = Math.min(100, bodyChange);
-		bodyChange = Math.max(-100, bodyChange);
+		bodyChange = minMax(bodyChange, 100);
 		addBody(bodyChange);
 		addEnergy(-(bodyChange * 10));
+	}
+
+	private double minMax(double value, int minMax)
+	{
+		value = Math.min(minMax, value);
+		value = Math.max(-minMax, value);
+		return value;
 	}
 }
