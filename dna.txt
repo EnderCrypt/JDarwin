@@ -1,0 +1,6 @@
+cond
+start
+10 .aimsx store
+5 .up store
+stop
+end
