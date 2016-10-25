@@ -10,6 +10,7 @@ import java.nio.charset.Charset;
 import com.endercrypt.jdarwin.bot.Bot;
 import com.endercrypt.jdarwin.bot.BotInfo;
 import com.endercrypt.jdarwin.compiler.JDarwin;
+import com.endercrypt.jdarwin.compiler.JDarwinCompilationException;
 import com.endercrypt.jdarwin.simulation.Simulation;
 import com.google.common.io.Files;
 
@@ -22,6 +23,8 @@ public class Game implements PaintCallback
 	private Camera camera;
 	private Simulation simulation;
 
+	private JDarwinCompilationException compilationFailure;
+
 	public Game()
 	{
 		camera = new Camera();
@@ -30,6 +33,7 @@ public class Game implements PaintCallback
 
 		gui = new GuiFrame();
 		gui.setPaintCallback(this);
+		gui.activate();
 
 		String dna;
 		try
@@ -40,7 +44,14 @@ public class Game implements PaintCallback
 		{
 			throw new RuntimeException(e);
 		}
-		simulation.addBot(new Bot(JDarwin.compile(dna)));
+		try
+		{
+			simulation.addBot(new Bot(JDarwin.compile(dna)));
+		}
+		catch (JDarwinCompilationException e)
+		{
+			compilationFailure = e;
+		}
 	}
 
 	public void update()
@@ -71,7 +82,9 @@ public class Game implements PaintCallback
 		// gui
 		camera.translateGuiForHud(g2d, screenSize);
 		g2d.setColor(Color.BLACK);
-		//g2d.drawString(gui.getScreenSize().toString(), 10, 20);
+		g2d.drawString(screenSize.width + ", " + screenSize.height, 10, 20);
+		if (compilationFailure != null)
+			g2d.drawString(compilationFailure.getClass().getSimpleName() + ": " + compilationFailure.getMessage(), 10, 40);
 
 		// done
 		guiReady = true;

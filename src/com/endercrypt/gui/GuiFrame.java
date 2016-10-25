@@ -20,6 +20,10 @@ public class GuiFrame
 		addPanel();
 		jFrame.setLocationRelativeTo(null);
 		jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	}
+
+	public void activate()
+	{
 		jFrame.setVisible(true);
 	}
 

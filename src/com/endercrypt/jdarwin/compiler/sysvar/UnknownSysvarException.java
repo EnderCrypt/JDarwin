@@ -1,7 +1,9 @@
 package com.endercrypt.jdarwin.compiler.sysvar;
 
+import com.endercrypt.jdarwin.compiler.JDarwinCompilationException;
+
 @SuppressWarnings("serial")
-public class UnknownSysvarException extends RuntimeException
+public class UnknownSysvarException extends JDarwinCompilationException
 {
 	public UnknownSysvarException()
 	{

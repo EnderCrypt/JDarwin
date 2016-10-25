@@ -1,33 +1,33 @@
 package com.endercrypt.jdarwin.compiler;
 
 @SuppressWarnings("serial")
-public class UnknownOperatorException extends JDarwinCompilationException
+public class JDarwinCompilationException extends RuntimeException
 {
-	public UnknownOperatorException()
+	public JDarwinCompilationException()
 	{
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public UnknownOperatorException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace)
+	public JDarwinCompilationException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace)
 	{
 		super(message, cause, enableSuppression, writableStackTrace);
 		// TODO Auto-generated constructor stub
 	}
 
-	public UnknownOperatorException(String message, Throwable cause)
+	public JDarwinCompilationException(String message, Throwable cause)
 	{
 		super(message, cause);
 		// TODO Auto-generated constructor stub
 	}
 
-	public UnknownOperatorException(String message)
+	public JDarwinCompilationException(String message)
 	{
 		super(message);
 		// TODO Auto-generated constructor stub
 	}
 
-	public UnknownOperatorException(Throwable cause)
+	public JDarwinCompilationException(Throwable cause)
 	{
 		super(cause);
 		// TODO Auto-generated constructor stub

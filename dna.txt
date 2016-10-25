@@ -1,6 +1,7 @@
 cond
+*.robage 75 mod 0 =
 start
-10 .aimsx store
-5 .up store
+314 .aimsx store
+50 .up store
 stop
 end
