@@ -12,9 +12,8 @@ import com.endercrypt.jdarwin.bot.BotInfo;
 import com.endercrypt.jdarwin.compiler.JDarwin;
 import com.endercrypt.jdarwin.compiler.JDarwinCompilationException;
 import com.endercrypt.jdarwin.simulation.Simulation;
+import com.endercrypt.library.position.Position;
 import com.google.common.io.Files;
-
-import se.endercrypt.library.position.Position;
 
 public class Game implements PaintCallback
 {

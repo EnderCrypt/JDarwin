@@ -3,8 +3,8 @@ package com.endercrypt.gui;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 
-import se.endercrypt.library.position.Motion;
-import se.endercrypt.library.position.Position;
+import com.endercrypt.library.position.Motion;
+import com.endercrypt.library.position.Position;
 
 public class Camera
 {

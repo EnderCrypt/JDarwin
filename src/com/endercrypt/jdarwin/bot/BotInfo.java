@@ -1,9 +1,8 @@
 package com.endercrypt.jdarwin.bot;
 
 import com.endercrypt.jdarwin.compiler.JDarwin;
-
-import se.endercrypt.library.position.Motion;
-import se.endercrypt.library.position.Position;
+import com.endercrypt.library.position.Motion;
+import com.endercrypt.library.position.Position;
 
 public class BotInfo
 {
