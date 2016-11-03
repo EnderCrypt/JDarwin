@@ -2,7 +2,7 @@ cond
 *.robage 0 =
 start
 10 50 store
-1256 10 div debugint 51 store
+1256 10 div 51 store
 stop
 cond
 *.robage 51 * mod 0 =
