@@ -24,7 +24,7 @@ public class Simulation
 		{
 			Bot bot = iterator.next();
 			bot.update(this);
-			if (bot.getBotInfo().energy <= 0)
+			if (bot.getBotInfo().energy.get() <= 0)
 			{
 				iterator.remove();
 			}

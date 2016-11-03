@@ -1,5 +1,6 @@
 package com.endercrypt.jdarwin.bot;
 
+import com.endercrypt.jdarwin.bot.field.ChangeValue;
 import com.endercrypt.jdarwin.bot.field.Rotation;
 import com.endercrypt.jdarwin.compiler.JDarwin;
 import com.endercrypt.library.position.Motion;
@@ -37,10 +38,8 @@ public class BotInfo
 	private static final double MAX_ENERGY = 32_000;
 
 	public int age = 0;
-	public double energy = 3000;
-	public double energyIncrease = 0;
-	public double body = 100;
-	public double bodyIncrease = 0;
+	public ChangeValue energy = new ChangeValue(3000);
+	public ChangeValue body = new ChangeValue(100);
 	public int timer = 0;
 	public int kills = 0;
 	public Rotation rotation = new Rotation(0);//Math.random() * (Math.PI * 2);
@@ -50,18 +49,6 @@ public class BotInfo
 	public BotInfo()
 	{
 
-	}
-
-	public void addEnergy(double by)
-	{
-		energy += by;
-		energyIncrease += by;
-	}
-
-	public void addBody(double by)
-	{
-		body += by;
-		bodyIncrease += by;
 	}
 
 	public void preUpdate(Bot bot) // set memory variables
@@ -80,21 +67,21 @@ public class BotInfo
 		memory.set(SysVelsx, (int) -leftVel);
 		memory.set(SysAimdx, 0);
 		memory.set(SysAimsx, 0);
-		memory.set(SysBodgain, (int) bodyIncrease);
-		memory.set(SysBodloss, (int) -bodyIncrease);
-		memory.set(SysPleas, (int) energyIncrease);
-		memory.set(SysPain, (int) -energyIncrease);
+		memory.set(SysBodgain, (int) body.getChange());
+		memory.set(SysBodloss, (int) -body.getChange());
+		memory.set(SysPleas, (int) energy.getChange());
+		memory.set(SysPain, (int) -energy.getChange());
 		memory.set(SysRobage, age);
-		memory.set(SysBody, (int) body);
-		memory.set(SysNrg, (int) energy);
+		memory.set(SysBody, (int) body.get());
+		memory.set(SysNrg, (int) energy.get());
 		memory.set(SysTimer, timer);
 		memory.set(SysAim, rotation.getDarwinRotation());
 		memory.set(SysKills, kills);
 		memory.set(SysXpos, (int) position.x);
 		memory.set(SysYpos, (int) position.y);
 
-		energyIncrease = 0;
-		bodyIncrease = 0;
+		body.resetChange();
+		energy.resetChange();
 	}
 
 	public void postUpdate(Bot bot) // read memory variables
@@ -112,16 +99,16 @@ public class BotInfo
 		motion.multiplyLength(FRICTION);
 		motion.truncateLength(40 * MOVEMENT_SPEED_MULTIPLIER);
 
-		if (energy > MAX_ENERGY)
+		if (energy.get() > MAX_ENERGY)
 		{
-			double bodyChange = (energy - MAX_ENERGY) / 10;
-			addBody(bodyChange);
-			energy = MAX_ENERGY;
+			double bodyForceChange = (energy.get() - MAX_ENERGY) / 10;
+			body.add(bodyForceChange);
+			energy.set(MAX_ENERGY);
 		}
 		double bodyChange = (memory.get(SysStrbody) - memory.get(SysFdbody));
 		bodyChange = minMax(bodyChange, 100);
-		addBody(bodyChange);
-		addEnergy(-(bodyChange * 10));
+		body.add(bodyChange);
+		energy.add(-(bodyChange * 10));
 	}
 
 	private double minMax(double value, int minMax)
