@@ -3,6 +3,8 @@ package com.endercrypt.gui;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.awt.geom.Ellipse2D;
+import java.awt.geom.Line2D;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -63,7 +65,7 @@ public class Game implements PaintCallback
 	}
 
 	@Override
-	public void PaintGui(Graphics2D g2d)
+	public void paintGui(Graphics2D g2d)
 	{
 		Dimension screenSize = gui.getScreenSize();
 		// world
@@ -71,12 +73,7 @@ public class Game implements PaintCallback
 		g2d.setColor(Color.BLUE);
 		for (Bot bot : simulation.getBots())
 		{
-			BotInfo info = bot.getBotInfo();
-			Position position = info.position;
-			g2d.drawOval((int) position.x, (int) position.y, 16, 16);
-			int rel_x = (int) (Math.cos(info.rotation) * 8);
-			int rel_y = (int) (Math.sin(info.rotation) * 8);
-			g2d.drawLine((int) position.x + 8, (int) position.y + 8, (int) (position.x + 8 + rel_x), (int) (position.y + 8 + rel_y));
+			paintDarwinBot(g2d, bot.getBotInfo());
 		}
 		// gui
 		camera.translateGuiForHud(g2d, screenSize);
@@ -87,5 +84,16 @@ public class Game implements PaintCallback
 
 		// done
 		guiReady = true;
+	}
+
+	private void paintDarwinBot(Graphics2D g2d, BotInfo botInfo)
+	{
+		Position position = botInfo.position;
+		double frontX = (Math.cos(botInfo.rotation) * 8);
+		double frontY = (Math.sin(botInfo.rotation) * 8);
+		Line2D.Double line = new Line2D.Double(position.x, position.y, position.x + frontX, position.y + frontY);
+		Ellipse2D.Double circle = new Ellipse2D.Double(position.x - 8.0, position.y - 8.0, 16.0, 16.0);
+		g2d.draw(line);
+		g2d.draw(circle);
 	}
 }

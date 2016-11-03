@@ -35,7 +35,7 @@ public class GuiFrame
 			protected void paintComponent(java.awt.Graphics g)
 			{
 				super.paintComponent(g);
-				paintCallback.PaintGui((Graphics2D) g);
+				paintCallback.paintGui((Graphics2D) g);
 				//paintGui((Graphics2D) g);
 			};
 		};
