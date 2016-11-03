@@ -1,5 +1,6 @@
 package com.endercrypt.jdarwin.bot;
 
+import com.endercrypt.jdarwin.bot.field.Rotation;
 import com.endercrypt.jdarwin.compiler.JDarwin;
 import com.endercrypt.library.position.Motion;
 import com.endercrypt.library.position.Position;
@@ -35,8 +36,6 @@ public class BotInfo
 	private static final double FRICTION = 0.95;
 	private static final double MAX_ENERGY = 32_000;
 
-	private static final double QUARTER_ROTATION = Math.PI / 2;
-
 	public int age = 0;
 	public double energy = 3000;
 	public double energyIncrease = 0;
@@ -44,7 +43,7 @@ public class BotInfo
 	public double bodyIncrease = 0;
 	public int timer = 0;
 	public int kills = 0;
-	public double rotation = Math.random() * (Math.PI * 2);
+	public Rotation rotation = new Rotation(0);//Math.random() * (Math.PI * 2);
 	public Position position = new Position();
 	public Motion motion = new Motion();
 
@@ -73,8 +72,8 @@ public class BotInfo
 		memory.set(SysDn, 0);
 		memory.set(SysSx, 0);
 		memory.set(SysDx, 0);
-		double upVel = motion.getLengthByDirection(rotation);
-		double leftVel = motion.getLengthByDirection(rotation - (Math.PI / 2));
+		double upVel = motion.getLengthByDirection(rotation.get());
+		double leftVel = motion.getLengthByDirection(rotation.get() - (Math.PI / 2));
 		memory.set(SysVelup, (int) upVel);
 		memory.set(SysVeldn, (int) -upVel);
 		memory.set(SysVeldx, (int) leftVel);
@@ -89,7 +88,7 @@ public class BotInfo
 		memory.set(SysBody, (int) body);
 		memory.set(SysNrg, (int) energy);
 		memory.set(SysTimer, timer);
-		memory.set(SysAim, (int) (rotation * 200));
+		memory.set(SysAim, rotation.getDarwinRotation());
 		memory.set(SysKills, kills);
 		memory.set(SysXpos, (int) position.x);
 		memory.set(SysYpos, (int) position.y);
@@ -106,10 +105,10 @@ public class BotInfo
 		timer++;
 		position.add(motion);
 
-		rotation -= (memory.get(SysAimsx) - memory.get(SysAimdx)) / 200.0;
+		rotation.increaseDarwinRotation(memory.get(SysAimsx) - memory.get(SysAimdx));
 
-		motion.addMotion(rotation, (memory.get(SysUp) - memory.get(SysDn)) * MOVEMENT_SPEED_MULTIPLIER);
-		motion.addMotion(rotation - QUARTER_ROTATION, (memory.get(SysSx) - memory.get(SysDx)) * MOVEMENT_SPEED_MULTIPLIER);
+		motion.addMotion(rotation.get(), (memory.get(SysUp) - memory.get(SysDn)) * MOVEMENT_SPEED_MULTIPLIER);
+		motion.addMotion(rotation.get() - Rotation.QUARTER_CIRCLE, (memory.get(SysSx) - memory.get(SysDx)) * MOVEMENT_SPEED_MULTIPLIER);
 		motion.multiplyLength(FRICTION);
 		motion.truncateLength(40 * MOVEMENT_SPEED_MULTIPLIER);
 

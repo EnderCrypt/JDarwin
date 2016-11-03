@@ -89,8 +89,9 @@ public class Game implements PaintCallback
 	private void paintDarwinBot(Graphics2D g2d, BotInfo botInfo)
 	{
 		Position position = botInfo.position;
-		double frontX = (Math.cos(botInfo.rotation) * 8);
-		double frontY = (Math.sin(botInfo.rotation) * 8);
+		double rotation = botInfo.rotation.get();
+		double frontX = (Math.cos(rotation) * 8);
+		double frontY = (Math.sin(rotation) * 8);
 		Line2D.Double line = new Line2D.Double(position.x, position.y, position.x + frontX, position.y + frontY);
 		Ellipse2D.Double circle = new Ellipse2D.Double(position.x - 8.0, position.y - 8.0, 16.0, 16.0);
 		g2d.draw(line);

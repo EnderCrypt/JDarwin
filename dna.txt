@@ -1,7 +1,17 @@
 cond
-*.robage 75 mod 0 =
+*.robage 0 =
 start
-314 .aimsx store
-50 .up store
+10 50 store
+1256 10 div debugint 51 store
+stop
+cond
+*.robage 51 * mod 0 =
+start
+50 negstore
+stop
+cond
+start
+50 * .aimsx addstore
+5 .up store
 stop
 end

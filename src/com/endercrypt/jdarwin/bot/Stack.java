@@ -14,22 +14,29 @@ public class Stack<T>
 
 	public void push(T value)
 	{
-		if (internalStack.size() < LIMIT)
+		if (internalStack.size() == LIMIT)
 		{
-			internalStack.push(value);
+			internalStack.remove(0);
 		}
+		internalStack.push(value);
 	}
 
 	public T pop()
 	{
-		if (internalStack.size() > 0)
-		{
-			return internalStack.pop();
-		}
-		else
+		if (internalStack.empty())
 		{
 			return defaultValue;
 		}
+		return internalStack.pop();
+	}
+
+	public T peek()
+	{
+		if (internalStack.empty())
+		{
+			return defaultValue;
+		}
+		return internalStack.peek();
 	}
 
 	public void clear()
